@@ -66,7 +66,31 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "fix:cs": [
+            "php-cs-fixer fix"
+        ],
+        "test:cs" : [
+            "php-cs-fixer fix --dry-run"
+        ],
+        "start" : [
+            "Composer\\Config::disableProcessTimeout",
+            "symfony serve --no-tls"
+        ],
+        "db": [
+            "php bin/console doctrine:database:drop --force --if-exists",
+            "php bin/console doctrine:database:create",
+            "php bin/console doctrine:migrations:migrate --no-interaction",
+            "php bin/console doctrine:fixtures:load --no-interaction"
         ]
+    },
+    "scripts-descriptions": {
+        "start": "Démarrer le projet",
+        "db": "(Re)création de la base de données",
+        "test:cs": "Vérifier le code PHP avec PHP CS Fixer",
+        "fix:cs": "Corriger le code PHP avec PHP CS Fixer",
+        "test:codeception": "Initialisation de la base de données de test puis tests exécutés",
+        "test": "Teste la mise en forme du code avec test:cs, puis appelle le script test:codeception"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -76,5 +100,8 @@
             "allow-contrib": false,
             "require": "6.3.*"
         }
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.48"
     }
 }
