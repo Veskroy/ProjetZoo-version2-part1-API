@@ -4,6 +4,7 @@ namespace App\Factory;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -29,14 +30,21 @@ use Zenstruck\Foundry\RepositoryProxy;
  */
 final class UserFactory extends ModelFactory
 {
+
+    private $passwordHasher;
+
+    private $transliterator;
+
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
      * @todo inject services if required
      */
-    public function __construct()
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
         parent::__construct();
+        $this->passwordHasher = $passwordHasher;
+        $this->transliterator = \Transliterator::create('Any-Lower; Latin-ASCII');
     }
 
     /**
@@ -46,13 +54,21 @@ final class UserFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
+        $firstName = self::faker()->firstName();
+        $lastName = self::faker()->lastName();
+        $email = $this->normalizeName(preg_replace('/\W/', '', $firstName)).'.'.$this->normalizeName(preg_replace('/\W/', '', $lastName)).'@'.self::faker()->domainName();
         return [
-            'email' => self::faker()->text(100),
-            'firstname' => self::faker()->text(50),
-            'lastname' => self::faker()->text(50),
-            'password' => self::faker()->text(255),
+            'email' => $email,
+            'firstname' => $firstName,
+            'lastname' => $lastName,
+            'password' => 'test',
             'roles' => [],
         ];
+    }
+
+    protected function normalizeName(string $ans): string
+    {
+        return $this->transliterator->transliterate($ans);
     }
 
     /**
