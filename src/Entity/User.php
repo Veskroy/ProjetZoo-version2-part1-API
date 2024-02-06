@@ -54,7 +54,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     private ?string $address = null;
 
     #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private $avatar = null;
+    private $avatar;
 
     public function getId(): ?int
     {

@@ -49,6 +49,7 @@ final class PenFactory extends ModelFactory
         $capacity = self::faker()->randomDigit();
         $type = self::faker()->randomElement(['cage', 'aquarium', 'barrière']);
         $size = self::faker()->randomFloat(1, 1000, 3000);
+
         return [
             'capacity' => $capacity,
             'type' => $type,

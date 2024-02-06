@@ -10,7 +10,9 @@ use Doctrine\Persistence\ObjectManager;
 
 class LikesFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function __construct(private readonly UserRepository $userRepository, private readonly QuestionRepository $questionRepository) {}
+    public function __construct(private readonly UserRepository $userRepository, private readonly QuestionRepository $questionRepository)
+    {
+    }
 
     public function load(ObjectManager $manager): void
     {
@@ -24,7 +26,7 @@ class LikesFixtures extends Fixture implements DependentFixtureInterface
         $questions = $this->questionRepository->findAll();
 
         foreach ($questions as $question) {
-            for ($i = 0; $i < mt_rand(0, 15); $i++) {
+            for ($i = 0; $i < mt_rand(0, 15); ++$i) {
                 $question->addLike(
                     $allUsers[mt_rand(0, count($allUsers) - 1)]
                 );
@@ -32,7 +34,6 @@ class LikesFixtures extends Fixture implements DependentFixtureInterface
         }
 
         $manager->flush();
-
     }
 
     public function getDependencies(): array

@@ -52,6 +52,7 @@ final class AnimalFactory extends ModelFactory
         $weight = self::faker()->randomFloat(1, 50, 300);
         $size = self::faker()->randomFloat(1, 50, 300);
         $birthDate = self::faker()->dateTime();
+
         return [
             'name' => $name,
             'gender' => $gender,

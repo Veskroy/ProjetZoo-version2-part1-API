@@ -48,8 +48,9 @@ final class SpeciesFactory extends ModelFactory
     {
         $name = self::faker()->word();
         $diet = self::faker()->randomElement(['carnivore', 'herbivore', 'omnivore']);
-        $origin = self::faker()->randomElement(['Afrique', 'Europe', 'Asie','Amérique','Australie']);
+        $origin = self::faker()->randomElement(['Afrique', 'Europe', 'Asie', 'Amérique', 'Australie']);
         $description = self::faker()->sentence();
+
         return [
             'name' => $name,
             'diet' => $diet,
