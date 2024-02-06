@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -16,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'weight', 'size', 'birthDate', 'species'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(DateFilter::class, properties: ['birthDate'])]
 #[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'description' => 'partial', 'gender' => 'exact', 'species' => 'partial'])]
+#[ApiFilter(RangeFilter::class, properties: ['weight', 'size'])]
 class Animal
 {
     #[ORM\Id]
