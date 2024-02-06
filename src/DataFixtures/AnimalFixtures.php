@@ -13,11 +13,10 @@ class AnimalFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-
         AnimalFactory::createMany(30, function () {
             return [
                 'species' => SpeciesFactory::random(),
-                'pen' => PenFactory::random()
+                'pen' => PenFactory::random(),
             ];
         });
     }
@@ -29,5 +28,4 @@ class AnimalFixtures extends Fixture implements DependentFixtureInterface
             PenFixtures::class,
         ];
     }
-
 }

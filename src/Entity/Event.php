@@ -101,8 +101,6 @@ class Event
         return $this->description;
     }
 
-
-
     public function setDescription(?string $Description): static
     {
         $this->description = $Description;
@@ -137,18 +135,11 @@ class Event
         return $this;
     }
 
-
-    /**
-     * @return int|null
-     */
     public function getMaxiNumPlace(): ?int
     {
         return $this->maxiNumPlace;
     }
 
-    /**
-     * @param int|null $maxiNumPlace
-     */
     public function setMaxiNumPlace(?int $maxiNumPlace): void
     {
         $this->maxiNumPlace = $maxiNumPlace;

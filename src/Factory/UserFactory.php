@@ -31,7 +31,6 @@ use Zenstruck\Foundry\RepositoryProxy;
  */
 final class UserFactory extends ModelFactory
 {
-
     private $passwordHasher;
 
     private $transliterator;
@@ -58,6 +57,7 @@ final class UserFactory extends ModelFactory
         $firstName = self::faker()->firstName();
         $lastName = self::faker()->lastName();
         $email = $this->normalizeName(preg_replace('/\W/', '', $firstName)).'.'.$this->normalizeName(preg_replace('/\W/', '', $lastName)).'@'.self::faker()->domainName();
+
         return [
             'email' => $email,
             'firstname' => $firstName,
@@ -85,7 +85,7 @@ final class UserFactory extends ModelFactory
             ->afterInstantiate(function (User $user) {
                 $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPassword()));
             })
-            ;
+        ;
     }
 
     protected static function getClass(): string

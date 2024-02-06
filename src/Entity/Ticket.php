@@ -37,7 +37,7 @@ class Ticket
 
     public function __construct()
     {
-       $this->event = new ArrayCollection();
+        $this->event = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,13 +65,13 @@ class Ticket
     public function setPrice(?int $Price): static
     {
         // les prix possible
-        $all_price= [20,12,15,16,0,14];
+        $all_price = [20, 12, 15, 16, 0, 14];
 
-        if (in_array($Price,$all_price)){
-        $this->price = $Price;}
-
-        else
-        {$this->price=null;}
+        if (in_array($Price, $all_price)) {
+            $this->price = $Price;
+        } else {
+            $this->price = null;
+        }
 
         return $this;
     }
@@ -84,11 +84,13 @@ class Ticket
     public function setType(?string $Type): static
     {
         // les Types de ticket possible
-        $all_type= ['ENFANT','ETUDIANT','SENIOR','JUNIOR','HANDICAPE',null,'CLASSIC'];
-            if(in_array($Type,$all_type)){
-        $this->type = $Type;}
-            else
-            {$this->type=null;}
+        $all_type = ['ENFANT', 'ETUDIANT', 'SENIOR', 'JUNIOR', 'HANDICAPE', null, 'CLASSIC'];
+        if (in_array($Type, $all_type)) {
+            $this->type = $Type;
+        } else {
+            $this->type = null;
+        }
+
         return $this;
     }
 
@@ -127,6 +129,4 @@ class Ticket
 
         return $this;
     }
-
-
 }

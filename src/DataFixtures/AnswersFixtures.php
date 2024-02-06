@@ -8,13 +8,12 @@ use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
 
 class AnswersFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        //AnswerFactory::createMany(10);
+        // AnswerFactory::createMany(10);
         $allUsers = UserFactory::repository()->findAll();
 
         if (!empty($allUsers)) {
@@ -31,13 +30,13 @@ class AnswersFixtures extends Fixture implements DependentFixtureInterface
             }
 
             $manager->flush();
-        }
-        else {
-            throw new \Exception("Aucun utilisateur trouvé");
+        } else {
+            throw new \Exception('Aucun utilisateur trouvé');
         }
     }
 
-    public function getDependencies(): array {
+    public function getDependencies(): array
+    {
         return [
             QuestionsFixtures::class,
         ];

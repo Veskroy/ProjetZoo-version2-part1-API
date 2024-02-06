@@ -165,7 +165,6 @@ class Question
     /**
      * @return Collection<int, User>
      */
-
     public function getLikes(): Collection
     {
         return $this->likes;
@@ -196,5 +195,4 @@ class Question
     {
         return $this->likes->contains($user);
     }
-
 }

@@ -18,7 +18,6 @@ class PenFixtures extends Fixture implements DependentFixtureInterface
             ];
         });
         $manager->flush();
-
     }
 
     public function getDependencies(): array

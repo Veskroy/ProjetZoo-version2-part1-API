@@ -25,5 +25,4 @@ class SpeciesFixtures extends Fixture implements DependentFixtureInterface
             FamilyFixtures::class,
         ];
     }
-
 }
