@@ -10,7 +10,7 @@ class FamilyFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $file = file_get_contents(__DIR__.'/data/Family.json');
+        $file = file_get_contents(__DIR__.'/data/Families.json');
         $array = json_decode($file, true);
         FamilyFactory::createSequence($array);
 
