@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: 'email', message: 'Il y a déjà un compte avec cette adresse e-mail.')]
 #[ORM\Table(name: '`user`')]
+#[ApiResource]
 class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
