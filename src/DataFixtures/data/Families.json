@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Oiseau",
+    "description": "Un oiseau est un animal à sang chaud avec un corps plumeux. Ils ont des ailes, des pattes et un bec sans dents."
+  },
+  {
+    "name": "Crocodilien",
+    "description": "Crocodilia est un ordre de vertébrés ovipares vivant dans les tropiques depuis 167,7 millions d'années."
+  },
+  {
+    "name": "Mammifère",
+    "description": "Les Mammifères sont des vertébrés vivipares avec mamelles et un système nerveux développé."
+  },
+  {
+    "name": "Chélonien",
+    "description": "Reptile avec une carapace dorsale et un plastron ventral."
+  },
+  {
+    "name": "Squamate",
+    "description": "Les squamates sont des vertébrés à écailles, incluant lézards et serpents, muant régulièrement."
+  },
+  {
+    "name": "Lissamphibien",
+    "description": "Groupe d'amphibiens comme salamandres et grenouilles avec peau lisse."
+  },
+  {
+    "name": "Actinoptérygien",
+    "description": "Classe de poissons avec nageoires rayonnées et osseuses."
+  },
+  {
+    "name": "Chondrichthyen",
+    "description": "Classe de poissons cartilagineux incluant requins et raies."
+  },
+  {
+    "name": "Myriapode",
+    "description": "Arthropodes comme mille-pattes avec corps segmenté et allongé."
+  },
+  {
+    "name": "Insecte",
+    "description": "Arthropodes avec trois parties corporelles et six pattes."
+  },
+  {
+    "name": "Arachnide",
+    "description": "Arthropodes comme araignées avec céphalothorax et quatre paires de pattes."
+  },
+  {
+    "name": "Crustacé",
+    "description": "Arthropodes aquatiques comme crabes avec exosquelette chitineux."
+  },
+  {
+    "name": "Céphalopode",
+    "description": "Mollusques marins comme calmars avec bras préhensiles et manteau développé."
+  },
+  {
+    "name": "Bivalve",
+    "description": "Mollusques comme moules avec coquille formée de deux valves."
+  },
+  {
+    "name": "Gastéropode",
+    "description": "Mollusques comme escargots avec pied musculaire et torsion du corps."
+  },
+  {
+    "name": "Echinoderme",
+    "description": "Animaux marins comme étoiles de mer avec corps pentaradiaire."
+  },
+  {
+    "name": "Cnidaire",
+    "description": "Animaux marins comme méduses avec cellules urticantes."
+  },
+  {
+    "name": "Amnélide",
+    "description": "Vers segmentés comme lombrics avec corps divisé et soies."
+  }
+]

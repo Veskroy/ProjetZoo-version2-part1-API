@@ -10,7 +10,7 @@ class SpotFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $file = file_get_contents(__DIR__.'/data/Spot.json');
+        $file = file_get_contents(__DIR__.'/data/Spots.json');
         $array = json_decode($file, true);
         SpotFactory::createSequence($array);
 

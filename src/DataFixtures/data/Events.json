@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Spectacle de dauphins",
+    "maxiNumPlace": 250,
+    "description": "Assistez à une performance éducative et divertissante où les dauphins démontrent leur intelligence à travers des tours étonnants, émerveillant petits et grands."
+  },
+  {
+    "name": "Nourissage des lions",
+    "maxiNumPlace": 70,
+    "description": "Les rois de la savane se montrent ! Venez admirer ces félins et leur majestueuse crinière dans leur environnement pendant que leurs soigneur leurs donnent à manger divers morceaux de viande."
+  },
+  {
+    "name": "Domptage des aigles",
+    "maxiNumPlace": 120,
+    "description": "Préparez-vous à être époustouflés par les performances de ces artistes de plumes. Ce spectacle allie majestuosité et performances durant lesquelles ces rapaces passeront à moins de 2 mètres de vous !"
+  },
+  {
+    "name": "Sensibilisation à la nature",
+    "maxiNumPlace": 35,
+    "description": "Une conférence au milieu de la nature elle-même pour aiderà prendre conscience de l'état écologique actuel."
+  }
+]
