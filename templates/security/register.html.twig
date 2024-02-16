@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Zoo de la Palmyre - Inscription{% endblock %}
+
+{% block body %}
+
+    <h1 class="main-title">Inscrivez-vous!</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.firstName, {'label': 'Votre prénom'}) }}
+    {{ form_row(form.lastName, {'label': 'Votre nom'}) }}
+    {{ form_row(form.email, {'label': 'Votre e-mail'}) }}
+    {{ form_row(form.password.first, {'label': 'Votre mot de passe'}) }}
+    {{ form_row(form.password.second, {'label': 'Confirmer votre mot de passe'}) }}
+
+    <div class="check-terms">
+        {{ form_row(form.termsAccepted, {'attr': {'class': 'acceptedTerms'}}) }}
+    </div>
+
+    {{ form_end(form) }}
+
+    <a class="btn button-secondary login-btn" href={{ path('app_login') }}>
+        Vous possédez déjà un compte? C'est <u>ici</u>.
+    </a>
+
+{% endblock %}
