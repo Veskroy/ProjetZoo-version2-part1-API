@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Zoo de la Palmyre - Connexion{% endblock %}
 
 {% block body %}
+    <!--
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -27,5 +28,37 @@
     <button class="btn btn-lg btn-primary" type="submit">
         Sign in
     </button>
-</form>
+</form> -->
+
+    <h1 class="main-title">Connectez-vous!</h1>
+
+    <form method="post" class="register-form">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        <div>
+            <label for="inputEmail">Email</label>
+            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+        </div>
+        <div>
+            <label for="inputPassword">Password</label>
+            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+        </div>
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+
+        <div style="margin-top: 10px;">
+            <button class="btn button-primary" type="submit">
+                Me connecter
+            </button>
+        </div>
+
+        <a class="btn button-secondary login-btn" href={{ path('app_register') }}>
+            Vous n'avez pas encore de compte ? C'est <u>ici</u>.
+        </a>
+
+    </form>
+
 {% endblock %}
