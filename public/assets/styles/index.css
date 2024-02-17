@@ -1,0 +1,250 @@
+/* variables */
+
+:root {
+    /* colors */
+    --primaryGreen: #4F614B;
+    --primaryGreen-hover: #171f17;
+    --darkenGreen: #364434;
+    --lightGreen: #afd5a7;
+    --primaryBrown: #8D6536;
+    --secondaryBrown: #4F3C26;
+    --secondaryBrown-hover: #36291b;
+    --primaryGray: #c9c2b7;
+    --primaryWhite: #FFFFFF;
+    --primaryWhite-hover: #e8e8e8;
+    --primaryBlack: #000000;
+    --lightBlack: #0000007a;
+    --inputBackground: #D9D9D9;
+    --footerBackground: #ECECEC;
+    --red-color-danger: #e70d0d;
+    --red-color-danger-hover: #c22525;
+    --red-color-admin: #B20000;
+    --red-color-admin-hover: #d50000;
+    --card-hover: rgb(234, 255, 233);
+    --background-container-body: #f3efef;
+    --background-badge-likes: #0500e8;
+
+    /* styles pour les messages */
+
+    --background-message-success: #d4edda;
+    --border-message-success: #c3e6cb;
+    --color-message-success: #155724;
+
+    --background-message-error: #f8d7da;
+    --border-message-error: #f5c6cb;
+    --color-message-error: #721c24;
+
+    --background-message-warning: #fff3cd;
+    --border-message-warning: #ffeeba;
+    --color-message-warning: #856404;
+
+    /* fonts */
+    --main-font-family-text: 'Didact Gothic', 'Inter', sans-serif;
+    --titles-font-family: 'Dangrek', 'Inter', sans-serif;
+    --titles-font-family-secondary: 'Mooli', sans-serif;
+
+    /* font-sizes */
+    --font-size-xl: clamp(20px, 4vw, 32px);
+    --font-size-l: clamp(18px, 4vw, 28px);
+    --font-size-m: clamp(16px, 2vw, 24px);
+    --font-size-s: clamp(14px, 1.8vw, 18px);
+    --font-size-xs: clamp(12px, 2vw, 14px);
+}
+
+/* reset */
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*********/
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background: url('../images/img-animaux/panda-roux.png') no-repeat center;
+    background-size: cover;
+    display: flex;
+}
+
+.authentification {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    width: 90%;
+    border-radius: 15px;
+}
+
+.authentification .authentification-infos {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: var(--primaryGreen);
+    width: 100%;
+    border-radius: 15px;
+    padding: 40px;
+    justify-content: space-around;
+}
+
+h1.main-title {
+    position: relative;
+    margin-inline: auto;
+    text-align: center;
+    font-family: var(--titles-font-family);
+}
+
+p {
+    font-family: var(--titles-font-family-secondary);
+    font-size: var(--font-size-s);
+}
+
+a {
+    text-decoration: none;
+    color: var(--primaryBlack);
+    cursor: pointer;
+    font-family: var(--titles-font-family-secondary);
+}
+
+input, select {
+    border: 1px solid var(--primaryGreen);
+    padding: 10px;
+    border-radius: 10px;
+    color: var(--primaryGray);
+}
+
+input:focus {
+    color: var(--primaryBlack);
+    border: 1px solid var(--primaryGreen);
+}
+
+
+h1.main-title {
+    color: var(--primaryWhite);
+}
+
+a.btn, button.btn {
+    padding: 7px 15px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+a.login-btn {
+    display: block;
+    width: max-content;
+    text-align: center;
+    color: var(--primaryWhite);
+    font-size: var(--font-size-xs);
+    margin-inline: auto;
+}
+
+a.login-btn:hover {
+    text-decoration: underline;
+}
+
+.authentification-infos p {
+    color: var(--primaryGray);
+}
+
+a.btn:hover, a.btn:focus, button.btn:hover, button.btn:focus {
+    color: var(--primaryWhite);
+}
+
+a.button-primary,
+button.button-primary {
+    color: var(--primaryWhite);
+    background-color: var(--primaryGreen);
+}
+
+a.button-secondary, button.button-secondary {
+    color: var(--primaryGreen);
+    background-color: var(--primaryWhite);
+    border: 1px solid var(--primaryGreen);
+}
+
+a.button-primary:hover, a.button-primary:focus,
+button.button-primary:hover, button.button-primary:focus {
+    background-color: var(--darkenGreen);
+}
+
+a.button-secondary:hover, a.button-secondary:focus,
+button.button-secondary:hover, button.button-secondary:focus {
+    background-color: var(--primaryGreen);
+}
+
+a.btn.button-danger, button.btn.button-danger {
+    background-color: var(--red-color-danger);
+    color: var(--primaryWhite);
+}
+
+a.btn.button-danger:hover, button.btn.button-danger:hover {
+    background-color: var(--red-color-danger-hover);
+}
+
+button.button-tertiary, a.button-tertiary {
+    background-color: var(--secondaryBrown);
+    color: white;
+}
+
+a.button-tertiary:hover,
+button.button-tertiary:hover {
+    background-color: var(--secondaryBrown-hover);
+}
+
+/* form */
+
+form {
+    padding: 50px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+form div {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+}
+
+div.check-terms {
+    margin-block: 20px;
+}
+
+div.check-terms div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+/* media queries */
+
+@media screen and (min-width: 1000px) {
+    .authentification {
+        flex-direction: row;
+    }
+    .authentification .authentification-infos {
+        height: 70vh;
+    }
+    form div {
+        width: 65%;
+    }
+    div.check-terms div {
+        width: 100%;
+    }
+}
