@@ -3,62 +3,45 @@
 {% block title %}Zoo de la Palmyre - Connexion{% endblock %}
 
 {% block body %}
-    <!--
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
+    <div class="authentification">
+        <div class="authentification-infos">
+            <h1 class="main-title">Connectez-vous!</h1>
+            <p>Bienvenue sur le site du Zoo de la Palmyre !
+                <br />
+                Pour pouvoir bénéficier de tous les avantages de notre site, connectez-vous dès maintenant.
+            </p>
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form> -->
-
-    <h1 class="main-title">Connectez-vous!</h1>
-
-    <form method="post" class="register-form">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-
-        <div>
-            <label for="inputEmail">Email</label>
-            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-        </div>
-        <div>
-            <label for="inputPassword">Password</label>
-            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-        </div>
-        <input type="hidden" name="_csrf_token"
-               value="{{ csrf_token('authenticate') }}"
-        >
-
-        <div style="margin-top: 10px;">
-            <button class="btn button-primary" type="submit">
-                Me connecter
-            </button>
+            <a class="login-btn" href={{ path('app_register') }}>
+                Vous n'avez pas encore de compte ? C'est ici.
+            </a>
         </div>
 
-        <a class="btn button-secondary login-btn" href={{ path('app_register') }}>
-            Vous n'avez pas encore de compte ? C'est <u>ici</u>.
-        </a>
+        <form method="post" class="register-form">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
 
-    </form>
+            <div>
+                <label for="inputEmail">Email</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+            </div>
+            <div>
+                <label for="inputPassword">Password</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+            </div>
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}"
+            >
+
+            <div style="margin-top: 10px;">
+                <button class="btn button-primary" type="submit">
+                    Me connecter
+                </button>
+            </div>
+
+        </form>
+
+    </div>
 
 {% endblock %}
