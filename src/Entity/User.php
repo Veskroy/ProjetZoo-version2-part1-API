@@ -11,10 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: 'email', message: 'Il y a déjà un compte avec cette adresse e-mail.')]
+#[UniqueEntity(fields: 'email', message: 'Il y a déjà un compte associé à cette adresse e-mail.')]
 #[ORM\Table(name: '`user`')]
 #[ApiResource]
 class User implements PasswordAuthenticatedUserInterface, UserInterface
@@ -22,40 +23,50 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read', 'user:read-list'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100, unique: true)]
     #[Assert\NotBlank()]
     #[Assert\Length(['max' => 100])]
     #[Assert\Email(['message' => "'{{ value }}' n'est pas une adresse mail valide."])]
+    #[Groups(['user:read', 'user:read-list'])]
     private ?string $email = null;
 
     #[ORM\Column]
+    #[Groups(['user:read', 'user:read-list'])]
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['user:read', 'user:read-list'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['user:read', 'user:read-list'])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Regex(pattern: '/^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4})$/', message: 'Format de téléphone invalide')]
+    #[Groups(['user:read', 'user:read-list'])]
     private ?string $phone = null;
 
     #[ORM\Column(length: 5, nullable: true)]
+    #[Groups(['user:read', 'user:read-list'])]
     private ?string $pc = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['user:read', 'user:read-list'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['user:read', 'user:read-list'])]
     private ?string $address = null;
 
     #[ORM\Column(type: Types::BLOB, nullable: true)]
+    #[Groups(['user:read', 'user:read-list'])]
     private $avatar;
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Question::class, orphanRemoval: true)]
@@ -189,6 +200,10 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function getRoles(): array
     {
+        // guarantee every user at least has ROLE_USER
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
         return $this->roles;
     }
 
@@ -208,7 +223,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
         return $this->email;
     }
-
 
     /**
      * @return Collection<int, Question>
