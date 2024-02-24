@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -55,6 +57,22 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     #[ORM\Column(type: Types::BLOB, nullable: true)]
     private $avatar;
+
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Question::class, orphanRemoval: true)]
+    private Collection $questions;
+
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Answer::class, orphanRemoval: true)]
+    private Collection $answers;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Ticket::class)]
+    private Collection $tickets;
+
+    public function __construct()
+    {
+        $this->questions = new ArrayCollection();
+        $this->answers = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -189,5 +207,111 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         // TODO: Implement getUserIdentifier() method.
 
         return $this->email;
+    }
+
+
+    /**
+     * @return Collection<int, Question>
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question): static
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions->add($question);
+            $question->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): static
+    {
+        if ($this->questions->removeElement($question)) {
+            // set the owning side to null (unless already changed)
+            if ($question->getAuthor() === $this) {
+                $question->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Answer>
+     */
+    public function getAnswers(): Collection
+    {
+        return $this->answers;
+    }
+
+    public function addAnswer(Answer $answer): static
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+            $answer->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): static
+    {
+        if ($this->answers->removeElement($answer)) {
+            // set the owning side to null (unless already changed)
+            if ($answer->getAuthor() === $this) {
+                $answer->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array('ROLE_ADMIN', $this->getRoles());
+    }
+
+    public function isEmployee(): bool
+    {
+        return in_array('ROLE_EMPLOYEE', $this->getRoles());
+    }
+
+    public function toString(): string
+    {
+        return $this->getFirstName().' '.$this->getLastName();
+    }
+
+    /**
+     * @return Collection<int, Ticket>
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): static
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets->add($ticket);
+            $ticket->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): static
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getUser() === $this) {
+                $ticket->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
