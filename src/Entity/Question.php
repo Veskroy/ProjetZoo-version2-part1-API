@@ -2,52 +2,133 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Controller\PublishQuestionController;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
-#[ApiResource]
-class Question
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'description' => 'partial', 'author' => 'exact'])]
+#[ApiFilter(BooleanFilter::class, properties: ['isResolved'])]
+#[UniqueEntity(fields: ['title'], message: 'Il existe déjà un sujet avec ce même titre.')]
+#[UniqueEntity(fields: ['description'], message: 'Il existe déjà un sujet avec cette même description.')]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            openapiContext: [
+                'summary' => 'Récupère la liste des questions',
+            ],
+            paginationItemsPerPage: 10,
+            normalizationContext: [
+                'groups' => ['question:read-list', 'user:read', 'user:read-list'],
+            ],
+        ),
+        new Get(
+            openapiContext: [
+                'summary' => 'Récupère une seule question',
+            ],
+            normalizationContext: [
+                'groups' => ['question:read-list', 'user:read', 'user:read-list'],
+            ],
+        ),
+        new Patch(
+            openapiContext: [
+                'summary' => 'Modifie une question',
+            ],
+            normalizationContext: [
+                'groups' => ['question:read'],
+            ],
+            denormalizationContext: [
+                'groups' => ['question:write'],
+            ],
+            security: "is_granted('ROLE_USER') and object.getAuthor() === user or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
+        ),
+        new Post(
+            controller: PublishQuestionController::class,
+            openapiContext: [
+                'summary' => 'Ajoute une question',
+            ],
+            normalizationContext: [
+                'groups' => ['question:read'],
+            ],
+            denormalizationContext: [
+                'groups' => ['question:write'],
+            ],
+            security: "is_granted('ROLE_USER')",
+        ),
+        new Delete(
+            openapiContext: [
+                'summary' => 'Supprime une question',
+            ],
+            security: "is_granted('ROLE_USER') and object.getAuthor() === user or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
+        ),
+    ],
+    order: ['createdAt' => 'DESC'],
+)]
+class Question extends AbstractController
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['question:read', 'question:read-list'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['question:read', 'question:read-list', 'question:write'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['question:read', 'question:read-list', 'question:write'])]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Groups(['question:read', 'question:read-list'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['question:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'questions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['question:read', 'question:read-list', 'question:write'])]
     private ?User $author = null;
 
     #[ORM\Column]
+    #[Groups(['question:read', 'question:read-list', 'question:write'])]
     private ?bool $isResolved = null;
 
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, cascade: ['remove'])]
+    #[Groups(['question:read'])]
     private Collection $answers;
 
     #[ORM\ManyToMany(targetEntity: User::class)]
     #[ORM\JoinTable('user_question_like')]
+    #[Groups(['question:read'])]
     private Collection $likes;
 
-    public function __construct()
+    public function __construct(/* User $author */)
     {
         $this->answers = new ArrayCollection();
         $this->likes = new ArrayCollection();
+
+        /*$this->author = $author;
+        $author->addQuestion($this);*/
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
