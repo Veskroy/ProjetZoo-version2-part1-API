@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use App\Repository\UserRepository;
+use App\State\MeProvider;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -14,7 +16,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: 'email', message: 'Il y a déjà un compte avec cette adresse e-mail.')]
 #[ORM\Table(name: '`user`')]
-#[ApiResource]
+#[ApiResource(operations: [
+    new Get(
+        uriTemplate: '/me',
+        openapiContext: [
+            'summary' => 'Récupère l\'utilisateur connecté',
+            'description' => 'Récupère l\'utilisateur connecté',
+        ],
+        provider: MeProvider::class,
+    ),
+])]
 class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
