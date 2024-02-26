@@ -68,7 +68,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             denormalizationContext: [
                 'groups' => ['question:write'],
             ],
-            security: "is_granted('ROLE_USER')",
+            security: "is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
         ),
         new Delete(
             openapiContext: [
