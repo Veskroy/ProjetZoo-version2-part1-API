@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Controller\EditQuestionController;
 use App\Controller\PublishQuestionController;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -29,6 +30,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new GetCollection(
+            uriTemplate: '/questions',
             openapiContext: [
                 'summary' => 'Récupère la liste des questions',
             ],
@@ -38,6 +40,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             ],
         ),
         new Get(
+            uriTemplate: '/questions/{id}',
             openapiContext: [
                 'summary' => 'Récupère une seule question',
             ],
@@ -46,6 +49,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
             ],
         ),
         new Patch(
+            uriTemplate: '/questions/{id}',
+            controller: EditQuestionController::class,
             openapiContext: [
                 'summary' => 'Modifie une question',
             ],
@@ -58,6 +63,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             security: "is_granted('ROLE_USER') and object.getAuthor() === user or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
         ),
         new Post(
+            uriTemplate: '/questions/new',
             controller: PublishQuestionController::class,
             openapiContext: [
                 'summary' => 'Ajoute une question',
