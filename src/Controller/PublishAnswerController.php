@@ -13,6 +13,7 @@ class PublishAnswerController extends AbstractController
         $data->setAuthor($this->getUser());
         $data->setCreatedAt(new \DateTimeImmutable());
         $data->setQuestion($question);
+
         return $data;
     }
 }
