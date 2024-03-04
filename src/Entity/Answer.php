@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -14,9 +18,14 @@ use App\Controller\PublishAnswerController;
 use App\Repository\AnswerRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\DocBlock\Description;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AnswerRepository::class)]
+#[ApiFilter(OrderFilter::class, properties: ['id', "author","createdAt","updatedAt","description","question"], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(DateFilter::class, properties: ["createdAt","updatedAt"])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'start', 'Description'=>'partial'])]
+
 #[ApiResource(operations: [
     new GetCollection(
         uriTemplate: '/questions/{questionId}/answers',
