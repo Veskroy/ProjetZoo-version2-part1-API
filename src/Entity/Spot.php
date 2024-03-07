@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SpotRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,6 +12,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SpotRepository::class)]
+#[ApiFilter(OrderFilter::class, properties:['id','name','pens'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(SearchFilter::class, properties: ['id'=>'exact','name'=>'partial','pens'=>'exact'])]
 #[ApiResource]
 class Spot
 {
