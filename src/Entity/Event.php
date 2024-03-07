@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\NumericFilter;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -17,8 +19,10 @@ use Symfony\Component\Validator\Constraints\Time;
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ApiResource]
 #[ApiFilter(OrderFilter::class, properties:["id",'name','maxiNumPlace','date','hstart','hend','description'], arguments: ['orderParameterName' => 'order'])]
-#[ApiFilter(DateFilter::class, properties: ['date'])]
-#[ApiFilter(SearchFilter::class, properties: ["id"=>'exact','name'=>'partial','maxiNumPlace'=>'exact','description'=>'partial'])]
+#[ApiFilter(DateFilter::class, properties: ['date','hstart','hend'])]
+#[ApiFilter(SearchFilter::class, properties: ["id"=>'exact','name'=>'partial','description'=>'partial'])]
+#[ApiFilter(RangeFilter::class, properties: ['maxiNumPlace'])]
+
 
 
 class Event
