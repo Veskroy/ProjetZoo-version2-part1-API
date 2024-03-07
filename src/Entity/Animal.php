@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Odm\Filter\NumericFilter;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
@@ -14,10 +15,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AnimalRepository::class)]
 #[ApiResource(order: ['name' => 'ASC'])]
-#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'weight', 'size', 'birthDate', 'species'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'weight', 'size', 'birthDate', 'species','pen'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(DateFilter::class, properties: ['birthDate'])]
-#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'description' => 'partial', 'gender' => 'exact', 'species' => 'partial'])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'description' => 'partial', 'gender' => 'exact', 'species' => 'exact','pen'=>'exact'])]
 #[ApiFilter(RangeFilter::class, properties: ['weight', 'size'])]
+
 class Animal
 {
     #[ORM\Id]
