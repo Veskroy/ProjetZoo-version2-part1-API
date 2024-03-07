@@ -15,7 +15,7 @@ use phpDocumentor\Reflection\DocBlock\Description;
 #[ORM\Entity(repositoryClass: FamilyRepository::class)]
 #[ApiResource]
 #[ApiFilter(OrderFilter::class, properties:['id','species','name','description'],  arguments: ['orderParameterName' => 'order'])]
-#[ApiFilter(SearchFilter::class, properties: ['id'=> 'exact', 'name'=>'start', 'description'=>'partial'])]
+#[ApiFilter(SearchFilter::class, properties: ['id'=> 'exact', 'name'=>'start', 'description'=>'partial','species'=>'exact'])]
 
 class Family
 {
