@@ -2,6 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\TicketRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,6 +15,10 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'date', 'price', 'type', 'user', 'event'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'type' => 'partial', 'user' => 'exact', 'event' => 'exact'])]
+#[ApiFilter(RangeFilter::class, properties: ['price'])]
+#[ApiFilter(DateFilter::class, properties: ['date'])]
 #[ApiResource]
 class Ticket
 {
