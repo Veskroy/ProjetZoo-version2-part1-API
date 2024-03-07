@@ -2,15 +2,25 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Time;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ApiResource]
+#[ApiFilter(OrderFilter::class, properties:["id",'name','maxiNumPlace','date','hstart','hend','description'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(DateFilter::class, properties: ['date'])]
+#[ApiFilter(SearchFilter::class, properties: ["id"=>'exact','name'=>'partial','maxiNumPlace'=>'exact','description'=>'partial'])]
+
+
 class Event
 {
     #[ORM\Id]
