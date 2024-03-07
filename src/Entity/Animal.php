@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiResource(order: ['name' => 'ASC'])]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'weight', 'size', 'birthDate', 'species','pen'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(DateFilter::class, properties: ['birthDate'])]
-#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'description' => 'partial', 'gender' => 'exact', 'species' => 'exact','pen'=>'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'description' => 'partial',  'gender' => 'exact', 'species' => 'exact','pen'=>'exact'])]
 #[ApiFilter(RangeFilter::class, properties: ['weight', 'size'])]
 
 class Animal
