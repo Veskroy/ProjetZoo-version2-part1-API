@@ -10,6 +10,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 class MeProvider implements ProviderInterface
 {
     public User $user;
+
     public function __construct(Security $security)
     {
         $this->user = $security->getUser();
@@ -20,5 +21,4 @@ class MeProvider implements ProviderInterface
         // Retrieve the state from somewhere
         return $this->user;
     }
-
 }

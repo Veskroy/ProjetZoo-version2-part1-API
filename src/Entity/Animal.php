@@ -8,16 +8,30 @@ use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\AnimalRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AnimalRepository::class)]
-#[ApiResource(order: ['name' => 'ASC'])]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'weight', 'size', 'birthDate', 'species'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(DateFilter::class, properties: ['birthDate'])]
 #[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'description' => 'partial', 'gender' => 'exact', 'species' => 'partial'])]
 #[ApiFilter(RangeFilter::class, properties: ['weight', 'size'])]
+#[ApiResource(
+    operations: [
+    new GetCollection(
+        uriTemplate: '/animals/all',
+        openapiContext: [
+            'summary' => 'Récupère la liste de tous les animaux',
+        ],
+        paginationItemsPerPage: 10,
+        normalizationContext: [
+            'groups' => ['animal:read-list'],
+        ],
+    )],
+    order: ['name' => 'ASC'])]
 class Animal
 {
     #[ORM\Id]
@@ -26,6 +40,7 @@ class Animal
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
+    #[Groups(['animal:read-list'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 1)]
