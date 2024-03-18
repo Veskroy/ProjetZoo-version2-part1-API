@@ -97,9 +97,9 @@ class Answer
     #[Groups(['answer:read', 'answer:read-list'])]
     private ?User $author = null;
 
-    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'answers')]
+    #[ORM\ManyToOne(inversedBy: 'answers')]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['answer:read', 'answer:create'])]
+    #[Groups(['answer:create'])]
     private ?Question $question = null;
 
     public function getId(): ?int
