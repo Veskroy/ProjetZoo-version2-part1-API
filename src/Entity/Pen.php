@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PenRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PenRepository::class)]
 #[ApiResource]
+#[ApiFilter(OrderFilter::class, properties:['id',"type",'capacity','size',"animal","spot"], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(SearchFilter::class, properties: ['id'=> 'exact', 'capacity'=>'exact', 'type'=> 'partial','animal'=>'exact','spot'=>'exact'])]
+#[ApiFilter(RangeFilter::class,properties:['size'])]
 class Pen
 {
     #[ORM\Id]

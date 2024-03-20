@@ -32,7 +32,7 @@ class RegisterType extends AbstractType
                 'type' => PasswordType::class,
                 'invalid_message' => 'Vous avez saisi deux mots de passe différents.',
                 'required' => true,
-                'first_options' => [
+                'first_options'  => [
                     'attr' => ['placeholder' => 'Saisissez votre mot de passe'],
                 ],
                 'second_options' => [
@@ -47,7 +47,7 @@ class RegisterType extends AbstractType
                         'minMessage' => 'Votre mot de passe doit comporter au moins {{ limit }} caractères.',
                         'max' => 4096,
                     ]),
-                ],
+                ]
             ])
             ->add('termsAccepted', CheckboxType::class, [
                 'label' => "J'accepte les conditions générales d'utilisation",
@@ -60,7 +60,7 @@ class RegisterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            // 'data_class' => User::class,
+            //'data_class' => User::class,
         ]);
     }
 }

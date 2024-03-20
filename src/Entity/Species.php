@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SpeciesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,7 +12,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SpeciesRepository::class)]
+#[ApiFilter(OrderFilter::class, properties:['id','name','diet','origin','description','family','animal'],arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(SearchFilter::class, properties: ['id'=> 'exact','name'=>'partial','diet'=>'partial','origin'=>'partial','description'=>'partial','family'=>'exact','animal'=>'exact'])]
 #[ApiResource]
+
 class Species
 {
     #[ORM\Id]

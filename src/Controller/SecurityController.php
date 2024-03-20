@@ -44,12 +44,13 @@ class SecurityController extends AbstractController
         $user = new User();
 
         $form = $this->createForm(RegisterType::class, $user, [
-            'attr' => ['class' => 'register-form'],
+            'attr' => ['class' => 'register-form']
         ])->add('register', SubmitType::class, ['label' => "S'inscrire", 'attr' => ['class' => 'btn button-primary full-width']]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             // vérification si un utilisateur a déjà l'email saisi
             $existingUser = $entityManager->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
 
@@ -62,13 +63,12 @@ class SecurityController extends AbstractController
                 $entityManager->flush();
 
                 $this->addFlash('success', 'Votre compte a bien été créé!');
-
                 return $this->redirectToRoute('app_login');
             }
         }
 
         return $this->render('security/register.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
