@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Doctrine\Odm\Filter\NumericFilter;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\AnimalRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,8 +17,21 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiResource(order: ['name' => 'ASC'])]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'weight', 'size', 'birthDate', 'species','pen'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(DateFilter::class, properties: ['birthDate'])]
-#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'description' => 'partial',  'gender' => 'exact', 'species' => 'exact','pen'=>'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'description' => 'partial', 'gender' => 'exact', 'species' => 'exact','pen'=>'exact'])]
 #[ApiFilter(RangeFilter::class, properties: ['weight', 'size'])]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/animals/all',
+            openapiContext: [
+                'summary' => 'Récupère la liste de tous les animaux',
+            ],
+            paginationItemsPerPage: 10,
+            normalizationContext: [
+                'groups' => ['animal:read-list'],
+            ],
+        )],
+    order: ['name' => 'ASC'])]
 
 class Animal
 {

@@ -20,5 +20,4 @@ class MeProvider implements ProviderInterface
         // Retrieve the state from somewhere
         return $this->user;
     }
-
 }

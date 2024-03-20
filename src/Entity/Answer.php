@@ -64,21 +64,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
         security: "is_granted('ROLE_USER') and object.getAuthor() === user or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
     ),
     new Post(
-        uriTemplate: '/questions/{questionId}/answers',
-        uriVariables: [
-            'questionId' => new Link(fromProperty: 'id', toProperty: 'question', fromClass: Question::class),
-        ],
         controller: PublishAnswerController::class,
-        openapiContext: [
-            'summary' => 'Ajoute une réponse à une question',
-        ],
+        openapiContext: ['summary' => 'Create a new reply'],
         normalizationContext: [
             'groups' => ['answer:read'],
         ],
         denormalizationContext: [
             'groups' => ['answer:create'],
         ],
-        security: "is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
+        security: "is_granted('IS_AUTHENTICATED_FULLY')"
     ),
     new Delete(
         openapiContext: [
@@ -112,9 +106,9 @@ class Answer
     #[Groups(['answer:read', 'answer:read-list'])]
     private ?User $author = null;
 
-    #[ORM\ManyToOne(inversedBy: 'question')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['answer:read'])]
+    #[ORM\ManyToOne(inversedBy: 'answers')]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['answer:create'])]
     private ?Question $question = null;
 
     public function getId(): ?int
