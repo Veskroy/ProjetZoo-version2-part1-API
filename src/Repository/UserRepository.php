@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\MediaObject;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,6 +20,18 @@ class UserRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    public function updateAvatar(User $user, MediaObject $mediaObject): void
+    {
+        $this->getEntityManager()->createQueryBuilder()
+            ->update(User::class, 'user')
+            ->set('user.avatar', ':media')
+            ->where('user.id = :user')
+            ->getQuery()
+            ->setParameter('media', $mediaObject->getId())
+            ->setParameter('user', $user->getId())
+            ->execute();
     }
 
     //    /**
