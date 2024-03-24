@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
@@ -25,9 +25,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
-#[ApiFilter(OrderFilter::class, properties:['id','title','description','author','createdAt','updatedAt',/*'answer'*/'likes'], arguments: ['orderParameterName' => 'order'])]
-#[ApiFilter(SearchFilter::class, properties: ['id'=> 'exact','title' => 'partial', 'description' => 'partial', 'author' => 'exact',/*'answer'=>'exact'*/])]
-#[ApiFilter(DateFilter::class, properties: ['createdAt','updatedAt'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'title', 'description', 'author', 'createdAt', 'updatedAt', /* 'answer' */ 'likes'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'title' => 'partial', 'description' => 'partial', 'author' => 'exact'/* 'answer'=>'exact' */])]
+#[ApiFilter(DateFilter::class, properties: ['createdAt', 'updatedAt'])]
 #[ApiFilter(BooleanFilter::class, properties: ['isResolved'])]
 #[UniqueEntity(fields: ['title'], message: 'Il existe déjà un sujet avec ce même titre.')]
 #[UniqueEntity(fields: ['description'], message: 'Il existe déjà un sujet avec cette même description.')]

@@ -14,9 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PenRepository::class)]
 #[ApiResource]
-#[ApiFilter(OrderFilter::class, properties:['id',"type",'capacity','size',"animal","spot"], arguments: ['orderParameterName' => 'order'])]
-#[ApiFilter(SearchFilter::class, properties: ['id'=> 'exact', 'capacity'=>'exact', 'type'=> 'partial','animal'=>'exact','spot'=>'exact'])]
-#[ApiFilter(RangeFilter::class,properties:['size'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'type', 'capacity', 'size', 'animal', 'spot'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'capacity' => 'exact', 'type' => 'partial', 'animal' => 'exact', 'spot' => 'exact'])]
+#[ApiFilter(RangeFilter::class, properties: ['size'])]
 class Pen
 {
     #[ORM\Id]

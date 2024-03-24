@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use App\Controller\GetAvatarController;
+use App\Controller\UploadNewAvatarAction;
 use App\Repository\UserRepository;
 use App\State\MeProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -27,6 +30,56 @@ use Symfony\Component\Validator\Constraints as Assert;
             'description' => 'Récupère l\'utilisateur connecté',
         ],
         provider: MeProvider::class,
+    ),
+    new Get(
+        uriTemplate: '/users/{id}/avatar',
+        formats: [
+            'png' => 'image/png',
+        ],
+        controller: GetAvatarController::class,
+        openapiContext: [
+            'summary' => 'Récupère l\'avatar de l\'utilisateur selon son identifiant',
+            'responses' => [
+                '200' => [
+                    'description' => 'Récupère l\'avatar de l\'utilisateur selon son identifiant',
+                    'content' => [
+                        'image/png' => [
+                            'schema' => [
+                                'type' => 'string',
+                                'format' => 'binary',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ),
+    new Post(
+        uriTemplate: '/me/avatar',
+        inputFormats: ['multipart' => ['multipart/form-data']],
+        controller: UploadNewAvatarAction::class,
+        openapiContext: [
+            'requestBody' => [
+                'content' => [
+                    'multipart/form-data' => [
+                        'schema' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'file' => [
+                                    'type' => 'string',
+                                    'format' => 'binary',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'summary' => 'Ajoute un avatar à l\'utilisateur connecté',
+            'description' => 'Ajoute un avatar à l\'utilisateur connecté',
+        ],
+        security: 'is_granted("IS_AUTHENTICATED_FULLY")',
+        validationContext: ['groups' => ['Default', 'media_object_create']],
+        deserialize: false,
     ),
 ])]
 class User implements PasswordAuthenticatedUserInterface, UserInterface
@@ -76,9 +129,11 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[Groups(['user:read', 'user:read-list'])]
     private ?string $address = null;
 
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    #[Groups(['user:read', 'user:read-list'])]
-    private $avatar;
+    #[ORM\ManyToOne(targetEntity: MediaObject::class, cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(types: ['https://schema.org/image'])]
+    #[Groups(['user:read', 'user:read-list', 'user:read-avatar'])]
+    public ?MediaObject $avatar = null;
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Question::class, orphanRemoval: true)]
     private Collection $questions;
@@ -197,18 +252,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return $this;
     }
 
-    public function getAvatar()
-    {
-        return $this->avatar;
-    }
-
-    public function setAvatar($avatar): static
-    {
-        $this->avatar = $avatar;
-
-        return $this;
-    }
-
     public function getRoles(): array
     {
         // guarantee every user at least has ROLE_USER
@@ -291,6 +334,18 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
                 $answer->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAvatar(): ?MediaObject
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?MediaObject $avatar): static
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

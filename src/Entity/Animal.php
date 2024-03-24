@@ -15,9 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AnimalRepository::class)]
 #[ApiResource(order: ['name' => 'ASC'])]
-#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'weight', 'size', 'birthDate', 'species','pen'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'weight', 'size', 'birthDate', 'species', 'pen'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(DateFilter::class, properties: ['birthDate'])]
-#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'description' => 'partial', 'gender' => 'exact', 'species' => 'exact','pen'=>'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'description' => 'partial', 'gender' => 'exact', 'species' => 'exact', 'pen' => 'exact'])]
 #[ApiFilter(RangeFilter::class, properties: ['weight', 'size'])]
 #[ApiResource(
     operations: [
@@ -32,7 +32,6 @@ use Doctrine\ORM\Mapping as ORM;
             ],
         )],
     order: ['name' => 'ASC'])]
-
 class Animal
 {
     #[ORM\Id]

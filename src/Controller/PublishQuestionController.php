@@ -10,6 +10,7 @@ class PublishQuestionController extends AbstractController
     public function __invoke(Question $data): Question
     {
         $data->setAuthor($this->getUser());
+
         return $data;
     }
 }
