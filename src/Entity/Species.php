@@ -12,10 +12,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SpeciesRepository::class)]
-#[ApiFilter(OrderFilter::class, properties:['id','name','diet','origin','description','family','animal'],arguments: ['orderParameterName' => 'order'])]
-#[ApiFilter(SearchFilter::class, properties: ['id'=> 'exact','name'=>'partial','diet'=>'partial','origin'=>'partial','description'=>'partial','family'=>'exact','animal'=>'exact'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'diet', 'origin', 'description', 'family', 'animal'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'diet' => 'partial', 'origin' => 'partial', 'description' => 'partial', 'family' => 'exact', 'animal' => 'exact'])]
 #[ApiResource]
-
 class Species
 {
     #[ORM\Id]

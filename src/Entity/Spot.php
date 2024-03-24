@@ -12,8 +12,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SpotRepository::class)]
-#[ApiFilter(OrderFilter::class, properties:['id','name','pens'], arguments: ['orderParameterName' => 'order'])]
-#[ApiFilter(SearchFilter::class, properties: ['id'=>'exact','name'=>'partial','pens'=>'exact'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'pens'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'pens' => 'exact'])]
 #[ApiResource]
 class Spot
 {
