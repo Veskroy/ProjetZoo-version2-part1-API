@@ -36,6 +36,7 @@ Le sujet sur lequel s'appuyer pour la réalisation de cette SAE se trouve [ici](
 
 - [Symfony](https://symfony.com/doc/current/setup.html)
 - [API Platform](https://api-platform.com/docs/distribution/)
+- [Docker](https://docs.docker.com/)
 
 <i>(... à compléter)</i>
 
@@ -65,7 +66,7 @@ cp .env .env.local
 
 4- Définir la base de données
 ```shell
-DATABASE_URL="mysql://user:password@mysql:3306/dbName?serverVersion=10.11.2-MariaDB&charset=utf8mb4"`
+DATABASE_URL="mysql://user:password@mysql:3306/dbName?serverVersion=10.11.2-MariaDB&charset=utf8mb4"
 ```
 
 5- Remplir la base de données
