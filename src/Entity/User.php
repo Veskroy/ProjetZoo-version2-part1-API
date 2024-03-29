@@ -73,6 +73,19 @@ use Symfony\Component\Validator\Constraints as Assert;
                         ],
                     ],
                 ],
+                'responses' => [
+                    '200' => [
+                        'description' => 'Ajoute un avatar à l\'utilisateur courant',
+                        'content' => [
+                            'image/png' => [
+                                'schema' => [
+                                    'type' => 'string',
+                                    'format' => 'binary',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'summary' => 'Ajoute un avatar à l\'utilisateur connecté',
             'description' => 'Ajoute un avatar à l\'utilisateur connecté',
