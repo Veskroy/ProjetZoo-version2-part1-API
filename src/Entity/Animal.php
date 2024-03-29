@@ -12,9 +12,9 @@ use ApiPlatform\Metadata\GetCollection;
 use App\Repository\AnimalRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AnimalRepository::class)]
-#[ApiResource(order: ['name' => 'ASC'])]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'weight', 'size', 'birthDate', 'species', 'pen'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(DateFilter::class, properties: ['birthDate'])]
 #[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'description' => 'partial', 'gender' => 'exact', 'species' => 'exact', 'pen' => 'exact'])]
@@ -40,27 +40,35 @@ class Animal
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
+    #[Groups(['animal:read-list'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 1)]
+    #[Groups(['animal:read-list'])]
     private ?string $gender = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['animal:read-list'])]
     private ?string $description = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['animal:read-list'])]
     private ?float $weight = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['animal:read-list'])]
     private ?float $size = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['animal:read-list'])]
     private ?\DateTimeInterface $birthDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'animal')]
+    #[Groups(['animal:read-list'])]
     private ?Species $species = null;
 
     #[ORM\ManyToOne(inversedBy: 'animal')]
+    #[Groups(['animal:read-list'])]
     private ?Pen $pen = null;
 
     public function getId(): ?int
