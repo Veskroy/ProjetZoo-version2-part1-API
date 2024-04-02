@@ -7,16 +7,37 @@ use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use App\Controller\EnclosuresWithAnimalsController;
 use App\Repository\PenRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PenRepository::class)]
 #[ApiResource]
 #[ApiFilter(OrderFilter::class, properties:['id',"type",'capacity','size',"animal","spot"], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(SearchFilter::class, properties: ['id'=> 'exact', 'capacity'=>'exact', 'type'=> 'partial','animal'=>'exact','spot'=>'exact'])]
 #[ApiFilter(RangeFilter::class,properties:['size'])]
+#[ApiResource(
+    operations: [
+        New GetCollection(
+            uriTemplate: '/pen/{id}',
+            controller: EnclosuresWithAnimalsController::class,
+            openapiContext: [
+                'summary' => 'Liste les animaux par enclos',
+            ],
+            normalizationContext: [
+                'groups' => ['pen:read'],
+            ],
+            security: "is_granted('ROLE_USER') and object.getAuthor() === user or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
+        ),
+    ],
+)]
 class Pen
 {
     #[ORM\Id]
@@ -34,13 +55,15 @@ class Pen
     private ?float $size = null;
 
     #[ORM\OneToMany(mappedBy: 'pen', targetEntity: Animal::class)]
+    #[Groups(['pen:read'])]
     private Collection $animal;
 
     #[ORM\ManyToOne(inversedBy: 'pens')]
     private ?Spot $spot = null;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
         $this->animal = new ArrayCollection();
     }
 
