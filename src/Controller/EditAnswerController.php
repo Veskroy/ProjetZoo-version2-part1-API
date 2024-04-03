@@ -10,6 +10,7 @@ class EditAnswerController extends AbstractController
     public function __invoke(Answer $data): Answer
     {
         $data->setUpdatedAt(new \DateTimeImmutable());
+
         return $data;
     }
 }

@@ -18,5 +18,4 @@ class PublishAnswerController extends AbstractController
 
         return $data;
     }
-
 }

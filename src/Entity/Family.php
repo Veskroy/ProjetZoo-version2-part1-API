@@ -10,13 +10,11 @@ use App\Repository\FamilyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\DocBlock\Description;
 
 #[ORM\Entity(repositoryClass: FamilyRepository::class)]
 #[ApiResource]
-#[ApiFilter(OrderFilter::class, properties:['id','species','name','description'],  arguments: ['orderParameterName' => 'order'])]
-#[ApiFilter(SearchFilter::class, properties: ['id'=> 'exact', 'name'=>'start', 'description'=>'partial','species'=>'exact'])]
-
+#[ApiFilter(OrderFilter::class, properties: ['id', 'species', 'name', 'description'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'start', 'description' => 'partial', 'species' => 'exact'])]
 class Family
 {
     #[ORM\Id]
