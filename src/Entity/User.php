@@ -105,7 +105,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ],
         normalizationContext: ['groups' => ['user:read']],
         denormalizationContext: ['groups' => ['user:write']],
-        security: 'is_granted("IS_AUTHENTICATED_FULLY")',
+        security: "is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
     ),
 ])]
 class User implements PasswordAuthenticatedUserInterface, UserInterface
