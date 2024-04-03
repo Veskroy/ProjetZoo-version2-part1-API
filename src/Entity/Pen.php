@@ -67,6 +67,13 @@ use Doctrine\ORM\Mapping as ORM;
             ],
             security: "is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
         ),
+        new Delete(
+            uriTemplate: '/pen/{id}',
+            openapiContext: [
+                'summary' => 'Supprime un enclo',
+            ],
+            security: "is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
+        ),
     ],
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'type', 'capacity', 'size', 'animal', 'spot'], arguments: ['orderParameterName' => 'order'])]
