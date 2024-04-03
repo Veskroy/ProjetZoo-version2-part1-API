@@ -149,6 +149,9 @@ class Ticket
             throw new \LogicException('La date du ticket est dans le passé, il est donc impossible de le réserver.');
         }
 
+        if ($this->isReserved()) {
+            throw new \LogicException('Le ticket est déjà réservé.');
+        }
 
         $this->setUser($user);
         $user->addTicket($this);
