@@ -55,6 +55,18 @@ use Doctrine\ORM\Mapping as ORM;
             ],
             security: "is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
         ),
+        new Post(
+            uriTemplate: '/pen/new',
+            controller: PublishPenController::class,
+            openapiContext: ['summary' => 'Ajouter un nouvel enclo'],
+            normalizationContext: [
+                'groups' => ['pen:read'],
+            ],
+            denormalizationContext: [
+                'groups' => ['pen:create'],
+            ],
+            security: "is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
+        ),
     ],
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'type', 'capacity', 'size', 'animal', 'spot'], arguments: ['orderParameterName' => 'order'])]
