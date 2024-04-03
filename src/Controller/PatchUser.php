@@ -29,11 +29,11 @@ class PatchUser extends AbstractController
         }
 
         if (
-            $data->getPc() < 1000 || $data->getPc() > 99999 ||
-            !preg_match('/^[a-zA-Z]+$/', $data->getFirstName()) ||
-            !preg_match('/^[a-zA-Z]+$/', $data->getLastName()) ||
-            !preg_match('/^[a-zA-Z]+$/', $data->getCity()) ||
-            !preg_match('/^[0-9]+$/', $data->getPhone())
+            $data->getPc() < 1000 || $data->getPc() > 99999
+            || !preg_match('/^[a-zA-Z]+$/', $data->getFirstName())
+            || !preg_match('/^[a-zA-Z]+$/', $data->getLastName())
+            || !preg_match('/^[a-zA-Z]+$/', $data->getCity())
+            || !preg_match('/^[0-9]+$/', $data->getPhone())
         ) {
             return new JsonResponse(['message' => 'Validation failed.'], JsonResponse::HTTP_BAD_REQUEST);
         }
