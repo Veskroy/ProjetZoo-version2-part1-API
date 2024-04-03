@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'date', 'price', 'type', 'user', 'event'], arguments: ['orderParameterName' => 'order'])]
@@ -94,20 +95,25 @@ use Doctrine\ORM\Mapping as ORM;
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['ticket:read', 'ticket:write'])]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['ticket:read', 'ticket:write'])]
     private ?int $price = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(['ticket:read', 'ticket:write'])]
     private ?string $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['ticket:read', 'ticket:write'])]
     private ?User $user = null;
 
     #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['ticket:read'])]
     private Collection $event;
 
     public function __construct()
