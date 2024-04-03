@@ -8,6 +8,11 @@ use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\TicketRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,8 +24,23 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'type' => 'partial', 'user' => 'exact', 'event' => 'exact'])]
 #[ApiFilter(RangeFilter::class, properties: ['price'])]
 #[ApiFilter(DateFilter::class, properties: ['date'])]
-#[ApiResource]
-class Ticket
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/tickets',
+            openapiContext: [
+                'summary' => 'Récupère la liste des tickets',
+            ],
+            paginationItemsPerPage: 10,
+            normalizationContext: [
+                'groups' => ['ticket:read-list', 'event:read', 'user:read', 'user:read-list'],
+            ],
+        ),
+
+    ],
+
+    order: ['createdAt' => 'DESC'],
+)] class Ticket
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
