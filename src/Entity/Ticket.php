@@ -37,6 +37,15 @@ use Doctrine\ORM\Mapping as ORM;
             ],
         ),
 
+        new Get(
+            uriTemplate: '/tickets/{id}',
+            openapiContext: [
+                'summary' => 'Récupère un seul ticket',
+            ],
+            normalizationContext: [
+                'groups' => ['ticket:read-list', 'event:read', 'user:read', 'user:read-list'],
+            ],
+        ),
     ],
 
     order: ['createdAt' => 'DESC'],
