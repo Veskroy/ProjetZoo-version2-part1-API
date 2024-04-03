@@ -5,8 +5,10 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Controller\GetAvatarController;
+use App\Controller\PatchUser;
 use App\Controller\UploadNewAvatarAction;
 use App\Repository\UserRepository;
 use App\State\MeProvider;
@@ -94,6 +96,17 @@ use Symfony\Component\Validator\Constraints as Assert;
         validationContext: ['groups' => ['Default', 'media_object_create']],
         deserialize: false,
     ),
+    new Patch(
+        uriTemplate: '/me/edit',
+        controller: PatchUser::class,
+        openapiContext: [
+            'summary' => 'Modifie l\'utilisateur connecté',
+            'description' => 'Modifie l\'utilisateur connecté',
+        ],
+        normalizationContext: ['groups' => ['user:read']],
+        denormalizationContext: ['groups' => ['user:write']],
+        security: 'is_granted("IS_AUTHENTICATED_FULLY")',
+    ),
 ])]
 class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
@@ -104,7 +117,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 100, unique: true)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank(groups: ['user:write'])]
     #[Assert\Length(['max' => 100])]
     #[Assert\Email(['message' => "'{{ value }}' n'est pas une adresse mail valide."])]
     #[Groups(['user:read', 'user:read-list'])]
@@ -118,28 +131,28 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:read', 'user:read-list'])]
+    #[Groups(['user:read', 'user:read-list', 'user:write'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:read', 'user:read-list'])]
+    #[Groups(['user:read', 'user:read-list', 'user:write'])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Regex(pattern: '/^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4})$/', message: 'Format de téléphone invalide')]
-    #[Groups(['user:read', 'user:read-list'])]
+    #[Groups(['user:read', 'user:read-list', 'user:write'])]
     private ?string $phone = null;
 
     #[ORM\Column(length: 5, nullable: true)]
-    #[Groups(['user:read', 'user:read-list'])]
+    #[Groups(['user:read', 'user:read-list', 'user:write'])]
     private ?string $pc = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:read-list'])]
+    #[Groups(['user:read', 'user:read-list', 'user:write'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:read-list'])]
+    #[Groups(['user:read', 'user:read-list', 'user:write'])]
     private ?string $address = null;
 
     #[ORM\ManyToOne(targetEntity: MediaObject::class, cascade: ['persist'])]
