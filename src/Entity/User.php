@@ -2,13 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Controller\GetAvatarController;
+use App\Controller\PatchUser;
+use App\Controller\UploadNewAvatarAction;
 use App\Repository\UserRepository;
 use App\State\MeProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -28,6 +33,80 @@ use Symfony\Component\Validator\Constraints as Assert;
         ],
         provider: MeProvider::class,
     ),
+    new Get(
+        uriTemplate: '/users/{id}/avatar',
+        formats: [
+            'png' => 'image/png',
+        ],
+        controller: GetAvatarController::class,
+        openapiContext: [
+            'summary' => 'Récupère l\'avatar de l\'utilisateur selon son identifiant',
+            'responses' => [
+                '200' => [
+                    'description' => 'Récupère l\'avatar de l\'utilisateur selon son identifiant',
+                    'content' => [
+                        'image/png' => [
+                            'schema' => [
+                                'type' => 'string',
+                                'format' => 'binary',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ),
+    new Post(
+        uriTemplate: '/me/avatar',
+        inputFormats: ['multipart' => ['multipart/form-data']],
+        controller: UploadNewAvatarAction::class,
+        openapiContext: [
+            'requestBody' => [
+                'content' => [
+                    'multipart/form-data' => [
+                        'schema' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'file' => [
+                                    'type' => 'string',
+                                    'format' => 'binary',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'responses' => [
+                    '200' => [
+                        'description' => 'Ajoute un avatar à l\'utilisateur courant',
+                        'content' => [
+                            'image/png' => [
+                                'schema' => [
+                                    'type' => 'string',
+                                    'format' => 'binary',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'summary' => 'Ajoute un avatar à l\'utilisateur connecté',
+            'description' => 'Ajoute un avatar à l\'utilisateur connecté',
+        ],
+        security: 'is_granted("IS_AUTHENTICATED_FULLY")',
+        validationContext: ['groups' => ['Default', 'media_object_create']],
+        deserialize: false,
+    ),
+    new Patch(
+        uriTemplate: '/me/edit',
+        controller: PatchUser::class,
+        openapiContext: [
+            'summary' => 'Modifie l\'utilisateur connecté',
+            'description' => 'Modifie l\'utilisateur connecté',
+        ],
+        normalizationContext: ['groups' => ['user:read']],
+        denormalizationContext: ['groups' => ['user:write']],
+        security: 'is_granted("IS_AUTHENTICATED_FULLY")',
+    ),
 ])]
 class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
@@ -38,7 +117,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 100, unique: true)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank(groups: ['user:write'])]
     #[Assert\Length(['max' => 100])]
     #[Assert\Email(['message' => "'{{ value }}' n'est pas une adresse mail valide."])]
     #[Groups(['user:read', 'user:read-list'])]
@@ -52,33 +131,35 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:read', 'user:read-list'])]
+    #[Groups(['user:read', 'user:read-list', 'user:write'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user:read', 'user:read-list'])]
+    #[Groups(['user:read', 'user:read-list', 'user:write'])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Regex(pattern: '/^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4})$/', message: 'Format de téléphone invalide')]
-    #[Groups(['user:read', 'user:read-list'])]
+    #[Groups(['user:read', 'user:read-list', 'user:write'])]
     private ?string $phone = null;
 
     #[ORM\Column(length: 5, nullable: true)]
-    #[Groups(['user:read', 'user:read-list'])]
+    #[Groups(['user:read', 'user:read-list', 'user:write'])]
     private ?string $pc = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:read-list'])]
+    #[Groups(['user:read', 'user:read-list', 'user:write'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:read-list'])]
+    #[Groups(['user:read', 'user:read-list', 'user:write'])]
     private ?string $address = null;
 
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    #[Groups(['user:read', 'user:read-list'])]
-    private $avatar;
+    #[ORM\ManyToOne(targetEntity: MediaObject::class, cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(types: ['https://schema.org/image'])]
+    #[Groups(['user:read', 'user:read-list', 'user:read-avatar'])]
+    public ?MediaObject $avatar = null;
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Question::class, orphanRemoval: true)]
     private Collection $questions;
@@ -197,18 +278,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return $this;
     }
 
-    public function getAvatar()
-    {
-        return $this->avatar;
-    }
-
-    public function setAvatar($avatar): static
-    {
-        $this->avatar = $avatar;
-
-        return $this;
-    }
-
     public function getRoles(): array
     {
         // guarantee every user at least has ROLE_USER
@@ -291,6 +360,18 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
                 $answer->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAvatar(): ?MediaObject
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?MediaObject $avatar): static
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }
