@@ -9,14 +9,18 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PublishPenController extends AbstractController
 {
-    public function __invoke(Pen $data, EntityManagerInterface $entityManager, Request $request): Pen
+    public function __invoke(Request $request, EntityManagerInterface $entityManager): Pen|\Symfony\Component\Form\FormInterface
     {
-        $data->setType($data->getType());
-        $data->setCapacity($data->getCapacity());
-        $data->setSize($data->getSize());
-        $entityManager->persist($data);
-        $entityManager->flush();
+        $pen = new Pen();
 
-        return $data;
+        $form = $this->createForm(Pen::class, $pen);
+        $form->submit($request->request->all());
+
+        if ($form->isValid()) {
+            $entityManager->persist($pen);
+            $entityManager->flush();
+            return $pen;
+        }
+        return $form;
     }
 }
