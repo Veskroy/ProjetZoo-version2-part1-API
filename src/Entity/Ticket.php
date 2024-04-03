@@ -154,4 +154,8 @@ class Ticket
         $user->addTicket($this);
     }
 
+    private function isReserved(): bool
+    {
+        return null !== $this->getUser();
+    }
 }
