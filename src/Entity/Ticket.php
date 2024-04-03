@@ -76,6 +76,13 @@ use Doctrine\ORM\Mapping as ORM;
             ],
             security: "is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
         ),
+        new Delete(
+            uriTemplate: '/tickets/{id}',
+            openapiContext: [
+                'summary' => 'Supprime un ticket',
+            ],
+            security: "is_granted('ROLE_USER') and object.getUser() === user or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
+        ),
     ],
 
     order: ['createdAt' => 'DESC'],
