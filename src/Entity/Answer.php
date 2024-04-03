@@ -62,15 +62,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
         security: "is_granted('ROLE_USER') and object.getAuthor() === user or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
     ),
     new Post(
+        uriTemplate: '/answers/new',
         controller: PublishAnswerController::class,
-        openapiContext: ['summary' => 'Create a new reply'],
+        openapiContext: ['summary' => 'Ajouter une nouvelle réponse'],
         normalizationContext: [
             'groups' => ['answer:read'],
         ],
         denormalizationContext: [
             'groups' => ['answer:create'],
         ],
-        security: "is_granted('IS_AUTHENTICATED_FULLY')"
+        security: "is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
     ),
     new Delete(
         openapiContext: [
