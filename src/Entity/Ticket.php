@@ -14,6 +14,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Controller\EditTicketController;
+use App\Controller\TakeTicketController;
 use App\Repository\TicketRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -66,7 +67,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
         new Post(
             uriTemplate: '/tickets/new',
-            controller: PublishTicketController::class,
+            controller: TakeTicketController::class,
             openapiContext: [
                 'summary' => 'Ajoute un ticket',
             ],
