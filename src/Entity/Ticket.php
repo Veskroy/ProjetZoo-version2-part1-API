@@ -46,6 +46,22 @@ use Doctrine\ORM\Mapping as ORM;
                 'groups' => ['ticket:read-list', 'event:read', 'user:read', 'user:read-list'],
             ],
         ),
+
+        new Patch(
+            uriTemplate: '/tickets/{id}',
+            controller: EditTicketController::class,
+            openapiContext: [
+                'summary' => 'Modifie un ticket',
+            ],
+            normalizationContext: [
+                'groups' => ['ticket:read'],
+            ],
+            denormalizationContext: [
+                'groups' => ['ticket:write'],
+            ],
+            security: "is_granted('ROLE_USER') and object.getUser() === user or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
+        ),
+
     ],
 
     order: ['createdAt' => 'DESC'],
