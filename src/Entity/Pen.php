@@ -7,7 +7,11 @@ use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Controller\EnclosuresWithAnimalsController;
 use App\Repository\PenRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,6 +32,16 @@ use Doctrine\ORM\Mapping as ORM;
             ],
             security: "is_granted('ROLE_USER') and object.getAuthor() === user or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
         ),
+        new Get(
+            uriTemplate: '/pen/{id}',
+            openapiContext: [
+                'summary' => 'Récupère un seul enclo',
+            ],
+            normalizationContext: [
+                'groups' => ['pen:read', 'animal:read', 'spot:read'],
+            ],
+        ),
+
     ],
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'type', 'capacity', 'size', 'animal', 'spot'], arguments: ['orderParameterName' => 'order'])]
