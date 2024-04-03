@@ -62,6 +62,20 @@ use Doctrine\ORM\Mapping as ORM;
             security: "is_granted('ROLE_USER') and object.getUser() === user or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
         ),
 
+        new Post(
+            uriTemplate: '/tickets/new',
+            controller: PublishTicketController::class,
+            openapiContext: [
+                'summary' => 'Ajoute un ticket',
+            ],
+            normalizationContext: [
+                'groups' => ['ticket:read'],
+            ],
+            denormalizationContext: [
+                'groups' => ['ticket:write'],
+            ],
+            security: "is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
+        ),
     ],
 
     order: ['createdAt' => 'DESC'],
