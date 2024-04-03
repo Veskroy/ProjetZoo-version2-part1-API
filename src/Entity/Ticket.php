@@ -138,4 +138,20 @@ class Ticket
 
         return $this;
     }
+
+    public function reserve(User $user): void
+    {
+        if ($user === $this->getUser()) {
+            throw new \LogicException("Le ticket est déjà réservé par l'utilisateur actuel.");
+        }
+
+        if ($this->getDate() < new \DateTimeImmutable()) {
+            throw new \LogicException('La date du ticket est dans le passé, il est donc impossible de le réserver.');
+        }
+
+
+        $this->setUser($user);
+        $user->addTicket($this);
+    }
+
 }
