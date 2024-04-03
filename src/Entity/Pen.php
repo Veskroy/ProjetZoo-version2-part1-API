@@ -41,7 +41,20 @@ use Doctrine\ORM\Mapping as ORM;
                 'groups' => ['pen:read', 'animal:read', 'spot:read'],
             ],
         ),
-
+        new Patch(
+            uriTemplate: '/pen/{id}',
+            controller: EditPenController::class,
+            openapiContext: [
+                'summary' => 'Modifie un enclos',
+            ],
+            normalizationContext: [
+                'groups' => ['pen:read'],
+            ],
+            denormalizationContext: [
+                'groups' => ['pen:write'],
+            ],
+            security: "is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE')",
+        ),
     ],
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'type', 'capacity', 'size', 'animal', 'spot'], arguments: ['orderParameterName' => 'order'])]
