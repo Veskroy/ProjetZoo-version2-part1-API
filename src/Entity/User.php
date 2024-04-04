@@ -92,7 +92,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             'summary' => 'Ajoute un avatar à l\'utilisateur connecté',
             'description' => 'Ajoute un avatar à l\'utilisateur connecté',
         ],
-        security: 'is_granted("IS_AUTHENTICATED_FULLY")',
+        security: 'is_granted("ROLE_USER") or is_granted("ROLE_ADMIN") or is_granted("ROLE_EMPLOYEE")',
         validationContext: ['groups' => ['Default', 'media_object_create']],
         deserialize: false,
     ),
