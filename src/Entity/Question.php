@@ -123,12 +123,12 @@ class Question extends AbstractController
     private ?bool $isResolved = null;
 
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, cascade: ['remove'])]
-    #[Groups(['question:read'])]
+    #[Groups(['question:read', 'question:read-list'])]
     private Collection $answers;
 
     #[ORM\ManyToMany(targetEntity: User::class)]
     #[ORM\JoinTable('user_question_like')]
-    #[Groups(['question:read'])]
+    #[Groups(['question:read', 'question:read-list'])]
     private Collection $likes;
 
     public function __construct(/* User $author */)
