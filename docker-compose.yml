@@ -10,7 +10,17 @@ services:
       MYSQL_DATABASE: 'WildWonderHub_db'
     volumes:
       - db_data:/var/lib/mysql:rw
-
+  php:
+    depends_on:
+      - db
+    build:
+      context: .
+      target: WildWonderHub_php
+    environment:
+      - PHP_INI_DIR=/usr/local/etc/php
+    volumes:
+      - ./:/srv/api:rw
+      - ./docker/php/conf.d/dev.ini:/usr/local/etc/php/api.ini:rw
 
 volumes:
   db_data:
