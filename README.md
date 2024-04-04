@@ -19,6 +19,8 @@ Le sujet sur lequel s'appuyer pour la réalisation de cette SAE se trouve [ici](
   * [Outils utilisés](#outils-utilisés)
   * [Guide d'installation](#guide-dinstallation)
   * [Gestion des branches et commits](#gestion-des-branches-et-commits)
+  * [Installation avec Docker](#installation-avec-docker)
+  * [Troubleshooting](#troubleshooting)
 <!-- TOC -->
 
 ---
@@ -67,6 +69,10 @@ cp .env .env.local
 4- Définir la base de données
 ```shell
 DATABASE_URL="mysql://user:password@mysql:3306/dbName?serverVersion=10.11.2-MariaDB&charset=utf8mb4"
+```
+DATABASE_URL pour Docker:
+```shell
+DATABASE_URL="mysql://WildWonderHub_user:WildWonderHub_password@db/WildWonderHub_db?serverVersion=10.11.2-MariaDB&charset=utf8mb4"
 ```
 
 5- Remplir la base de données
@@ -130,4 +136,20 @@ git commit -m "delete: <fonctionnalité supprimée>"
 * modification d'un composant
 ```shell
 git commit -m "edit(<component>): <fonctionnalité modifiée sur le dit component>"
+```
+
+### Installation avec Docker
+
+- Pour le lancer avec le docker compose :
+```sh
+docker-compose up
+```
+
+## Troubleshooting
+
+Si vous n'avez pas les permissions executez le fichier `droits.sh`
+Dans le cas de l'IUT vous pouvez executer :
+```sh
+docker exec -ti sae4-01-api-php-1 /bin/sh
+chmod -R o+rwx public vendor
 ```
