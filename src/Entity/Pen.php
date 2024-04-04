@@ -17,6 +17,7 @@ use App\Repository\PenRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PenRepository::class)]
 #[ApiResource(
@@ -85,12 +86,15 @@ class Pen
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['pen:read', 'pen:write'])]
     private ?int $capacity = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(['pen:read', 'pen:write'])]
     private ?string $type = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['pen:read', 'pen:write'])]
     private ?float $size = null;
 
     #[ORM\OneToMany(mappedBy: 'pen', targetEntity: Animal::class)]
