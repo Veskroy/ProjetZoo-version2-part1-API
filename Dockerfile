@@ -47,3 +47,8 @@ RUN set -eux; \
     \
     apk del .build-deps
 
+# Installation de composer et des configurations de PHP
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+RUN ln -s $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
+COPY "docker/php/conf.d/prod.ini" "$PHP_INI_DIR/conf.d/api.ini"
+
