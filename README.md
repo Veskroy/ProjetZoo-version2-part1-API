@@ -70,6 +70,10 @@ cp .env .env.local
 ```shell
 DATABASE_URL="mysql://user:password@mysql:3306/dbName?serverVersion=10.11.2-MariaDB&charset=utf8mb4"
 ```
+DATABASE_URL pour Docker:
+```shell
+DATABASE_URL="mysql://WildWonderHub_user:WildWonderHub_password@db/WildWonderHub_db?serverVersion=10.11.2-MariaDB&charset=utf8mb4"
+```
 
 5- Remplir la base de données
 ```shell
