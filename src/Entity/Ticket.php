@@ -13,8 +13,6 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Controller\EditTicketController;
-use App\Controller\TakeTicketController;
 use App\Repository\TicketRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -52,7 +50,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
         new Patch(
             uriTemplate: '/tickets/{id}',
-            controller: EditTicketController::class,
             openapiContext: [
                 'summary' => 'Modifie un ticket',
             ],
@@ -67,7 +64,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
         new Post(
             uriTemplate: '/tickets/new',
-            controller: TakeTicketController::class,
             openapiContext: [
                 'summary' => 'Ajoute un ticket',
             ],
