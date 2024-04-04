@@ -1,4 +1,16 @@
 version: '3.4'
 
 services:
+  db:
+    image: mariadb:10.2.25
+    environment:
+      MYSQL_USER: 'WildWonderHub_user'
+      MYSQL_PASSWORD: 'WildWonderHub_password'
+      MYSQL_ROOT_PASSWORD: 'WildWonderHub_root_password'
+      MYSQL_DATABASE: 'WildWonderHub_db'
+    volumes:
+      - db_data:/var/lib/mysql:rw
 
+
+volumes:
+  db_data:
