@@ -21,6 +21,15 @@ services:
     volumes:
       - ./:/srv/api:rw
       - ./docker/php/conf.d/dev.ini:/usr/local/etc/php/api.ini:rw
-
+  api:
+    build:
+      context: .
+      target: WildWonderHub_nginx
+    depends_on:
+      - php
+    volumes:
+      - ./public:/srv/api/public:rw
+    ports:
+      - 8085:80
 volumes:
   db_data:
