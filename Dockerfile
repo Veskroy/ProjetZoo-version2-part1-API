@@ -52,5 +52,53 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN ln -s $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 COPY "docker/php/conf.d/prod.ini" "$PHP_INI_DIR/conf.d/api.ini"
 
-# set the composer allow super user env variable
+# Mise en place d'une variable env SuperUSER
 ENV COMPOSER_ALLOW_SUPERUSER=1
+
+RUN set -eux; \
+composer global config --no-plugins allow-plugins.symfony/flex true; \
+composer global require "symfony/flex" --prefer-dist --no-progress --classmap-authoritative; \
+composer clear-cache
+
+ENV PATH="${PATH}:/root/.composer/vendor/bin"
+WORKDIR /srv/api
+ARG APP_ENV=prod
+
+COPY "composer.json" .
+COPY "composer.lock" .
+COPY "symfony.lock" .
+
+RUN set -eux; \
+    composer install --prefer-dist --no-dev --no-scripts --no-progress; \
+    composer clear-cache
+
+COPY ".env" ".env"
+RUN composer dump-env prod
+
+COPY bin/ ./bin
+COPY config/ ./config
+COPY migrations/ ./migrations
+COPY public/ ./public
+COPY src/ ./src
+COPY templates/ ./templates
+
+RUN find config migrations public src templates -type d -exec chmod a+rx {} \;
+RUN find config migrations public src templates -type f -exec chmod a+r {} \;
+
+RUN set -eux; \
+mkdir -p var/cache var/log; \
+composer dump-autoload --classmap-authoritative --no-dev; \
+composer run-script --no-dev post-install-cmd; \
+chmod +x bin/console; sync
+
+
+VOLUME /srv/api/var
+COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
+ENTRYPOINT [ "docker-entrypoint" ]
+CMD ["php-fpm"]
+
+FROM nginx:${NGINX_VERSION}-alpine AS WildWonderHub_nginx
+COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+WORKDIR /srv/api/public
+COPY --from=WildWonderHub_php /srv/api/public/ /srv/api/public/
