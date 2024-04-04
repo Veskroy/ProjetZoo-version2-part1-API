@@ -12,9 +12,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Controller\EditPenController;
 use App\Controller\EnclosuresWithAnimalsController;
-use App\Controller\PublishPenController;
 use App\Repository\PenRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: PenRepository::class)]
 #[ApiResource(
     operations: [
-        New GetCollection(
+        new GetCollection(
             uriTemplate: '/pen/{id}',
             controller: EnclosuresWithAnimalsController::class,
             openapiContext: [
@@ -45,7 +43,6 @@ use Doctrine\ORM\Mapping as ORM;
         ),
         new Patch(
             uriTemplate: '/pen/{id}',
-            controller: EditPenController::class,
             openapiContext: [
                 'summary' => 'Modifie un enclos',
             ],
@@ -59,7 +56,6 @@ use Doctrine\ORM\Mapping as ORM;
         ),
         new Post(
             uriTemplate: '/pen/new',
-            controller: PublishPenController::class,
             openapiContext: ['summary' => 'Ajouter un nouvel enclo'],
             normalizationContext: [
                 'groups' => ['pen:read'],
