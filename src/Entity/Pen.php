@@ -23,7 +23,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new GetCollection(
-            uriTemplate: '/pen/{id}',
             controller: EnclosuresWithAnimalsController::class,
             openapiContext: [
                 'summary' => 'Liste les animaux par enclos',
