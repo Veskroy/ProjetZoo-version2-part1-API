@@ -15,10 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AnimalRepository::class)]
-#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'weight', 'size', 'birthDate', 'species', 'pen'], arguments: ['orderParameterName' => 'order'])]
-#[ApiFilter(DateFilter::class, properties: ['birthDate'])]
-#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'description' => 'partial', 'gender' => 'exact', 'species' => 'exact', 'pen' => 'exact'])]
-#[ApiFilter(RangeFilter::class, properties: ['weight', 'size'])]
 #[ApiResource(
     operations: [
         new GetCollection(
@@ -32,6 +28,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
             ],
         )],
     order: ['name' => 'ASC'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'weight', 'size', 'birthDate', 'species', 'pen'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(DateFilter::class, properties: ['birthDate'])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'name' => 'partial', 'description' => 'partial', 'gender' => 'exact', 'species' => 'exact', 'pen' => 'exact'])]
+#[ApiFilter(RangeFilter::class, properties: ['weight', 'size'])]
+
 class Animal
 {
     #[ORM\Id]
@@ -60,15 +61,12 @@ class Animal
     private ?float $size = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Groups(['animal:read-list'])]
     private ?\DateTimeInterface $birthDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'animal')]
-    #[Groups(['animal:read-list'])]
     private ?Species $species = null;
 
     #[ORM\ManyToOne(inversedBy: 'animal')]
-    #[Groups(['animal:read-list'])]
     private ?Pen $pen = null;
 
     public function getId(): ?int
