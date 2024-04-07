@@ -33,6 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ],
         provider: MeProvider::class,
     ),
+
     new Get(
         uriTemplate: '/users/{id}/avatar',
         formats: [

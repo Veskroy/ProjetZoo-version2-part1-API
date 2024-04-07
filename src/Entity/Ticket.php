@@ -84,24 +84,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
     ],
 
-    order: ['createdAt' => 'DESC'],
+
 )] class Ticket
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['ticket:read-list'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Groups(['ticket:read', 'ticket:write'])]
+    #[Groups(['ticket:read', 'ticket:write','ticket:read-list'])]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['ticket:read', 'ticket:write'])]
+    #[Groups(['ticket:read', 'ticket:write','ticket:read-list'])]
     private ?int $price = null;
 
     #[ORM\Column(length: 50, nullable: true)]
-    #[Groups(['ticket:read', 'ticket:write'])]
+    #[Groups(['ticket:read', 'ticket:write','ticket:read-list'])]
     private ?string $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'tickets')]
